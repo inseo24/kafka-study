@@ -18,7 +18,6 @@
   - CLI guide에선 `confluent login --save` 하면 바로 실행되던데 제대로 안 됌
   - 일단 아래처럼 환경 변수 설정함
      ```bash
-     $ export PATH="$PATH:/path/to/confluent/bin"
      $ export PATH="$PATH:/Users/seoin/bin"
      ```
   -  그리고 `confluent login --save` 다시 했는데, 아래 에러 발생
