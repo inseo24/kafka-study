@@ -24,7 +24,7 @@
      ```bash
      Error: unable to open web browser for authorization: exec: "open": executable file not found in $PATH
      ```
-  - 그래서 그냥 key 생성해서 함 근데도 안 됌 망할 내일 한다
+  - 그래서 그냥 뇌피셜로 key 생성해서 하면 되지 않을까 싶어서 함 근데도 안 됌 망할 내일 한다
     ```bash
     $ confluent login --token <API_KEY>:<API_SECRET>
     ```
