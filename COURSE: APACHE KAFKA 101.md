@@ -66,6 +66,44 @@
       
       <img width="794" alt="image" src="https://user-images.githubusercontent.com/84627144/233817923-3925938b-5882-41f7-b376-fa3523b36627.png">
    
+  - 환경 설정
+    - User의 Confluent 환경 확인
+    - 카프카의 클러스터, 스키마 레지스트리, 커넥터와 같은 구성 요소가 포함
+
+      ```bash
+      $ confluent environment list
+      ```
+   
+  - 환경 설정을 갖다 쓰자
+    - 위에 나온 환경 리스트 중 사용할 환경 ID 선택해 지정
+   
+       ```bash
+       $ confluent environment use {ID}
+       ```
+   
+   - 카프카 클러스터 목록 확인
+   
+      ```bash
+      $ confluent kafka cluster list
+      ```
+
+   - 카프카 클러스터 사용 설정
+
+       ```bash   
+       $ confluent kafka cluster use {ID}
+       ```
+   
+   - API 키 생성
+
+       ```bash   
+       $ confluent api-key create --resource {ID}
+       ```
+   
+   - API 키 사용 설정
+   
+       ```bash   
+       $ confluent api-key use {API Key} --resource {ID}
+       ```
 
 </details>
 
