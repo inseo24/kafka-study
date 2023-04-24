@@ -184,6 +184,53 @@
          14: "좋은 사람이라는 평판은 그가 한 말 때문이 아니라 그가 행한 바람직한 행동 때문에 만들어진다."
          ```
 
+6. 파티션 실습
+   - 파티션을 이용해 토픽을 chunk로 나눠 여러 노드에 걸쳐 저장할 수 있음
+   - CLI를 통해 각각 다른 파티션 수를 갖는 토픽을 만드는 방법 & 토픽의 파티션 수 변화가 데이터 분포에 미치는 영향을 보자
+   
+   - 토픽 list 출력
+   
+      ```bash
+      $ confluent kafka topic list
+      ```
+   
+   - 자세한 정보를 확인하기 위해선 describe를 쓰면 된다.
+   
+      ```bash
+      $ confluent kafka topic describe ${topic_name}
+      ```
+   
+      - 앞서 생성한 poem의 경우 num.partitions 값이 6임
+   
+   - 각각 1개, 4개의 파티션을 가진 2개의 토픽을 생성해보자
+   
+      ```bash
+      $ confluent kafka topic create --partitions 1 poem_1
+      $ confluent kafka topic create --partitions 4 poem_4
+      ```
+   
+   - --parse-key 와 함께 produce 명령을 사용해 토픽에 데이터 생성
+   
+      - poem_1, poem_4 모두 진행
+   
+      ```bash
+         $ confluent kafka topic produce poem_1 --parse-key
+      ```
+   
+      ```bash
+      1:”All that is gold does not glitter”
+      2:"Not all who wander are lost"
+      3:"The old that is strong does not wither"
+      4:"Deep roots are not harmed by the frost"
+      5:"From the ashes a fire shall awaken"
+      6:"A light from the shadows shall spring"
+      7:"Renewed shall be blad that was broken"
+      8:"The crownless again shall be king"
+      ```
+   - Confluent Clould 콘솔에 가서 생성된 두 토픽을 확인하자
+      - poem_1 토픽은 1개의 파티션에서 전체 8개의 메시지를 포함하고 있음을 알 수 있다.
+      - poem_4 토픽의 경우 4개의 파티션으로 데이터가 균등하게 분산되어 있음을 알 수 있다.
+   
    
 </details>
 
