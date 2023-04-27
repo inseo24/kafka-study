@@ -99,6 +99,38 @@
 
    </details>
    
+   <details>
+   <summary>Producers </summary>
+
+   - 자바에서는 KafkaProducer라는 클래스를 사용해 클러스터에 연결함
+       - 클러스터의 몇 개의 브로커 주소, 적절한 보안 구성 및 프로듀서의 네트워크 동작을 결정하는 config를 포함한 configuration mapt이 제공된다.
+   - 클러스터로 전송할 key-value pair를 보유하기 위해 ProducerRecord라는 다른 클래스도 있다.
+   - 라이브러리는 connection pooling, network buffering, 브로커가 메시지를 인식할 때까지 대기하며 필요한 경우 메시지를 재전송하고 다른 세부 정보를 관리한다.
+
+   </details>
+   
+   <details>
+   <summary>Consumers </summary>
+
+   - 클러스터에 연결하기 위해 KafkaConsumer라는 클래스 사용
+   - connection을 사용해 하나 이상의 토픽을 구독한다. 토픽에서 메시지를 사용할 수 있을 때, ConsumerRecords라는 컬렉션에서 메시지가 반환된다. 이 컬렉션에는 ConsumerRecord 객체 형태의 개별 메시지 인스턴스가 포함된다.
+   - KafkaConsumer는 KafkaProducer와 마찬가지로 connection pooloing 및 네트워크 프로토콜을 관리하지만, 읽기 측면에서의 역할은 network plumbing 이상의 역할을 한다.
+       - network plumbing : 네트워크 통신을 위한 구성요소 및 기술
+   - 먼저 Kafka는 메시지를 읽는 것이 메시지를 파괴하지 않는 것이기 때문에 기존의 메시지 큐와 달리 이미 읽은 메시지를 다른 컨슈머가 읽을 수 있다.
+   - 사실, 많은 컨슈머가 하나의 토픽에서 읽는 것이 Kafka에서는 정상적인데 이런 사실은 Kafka 주변에 나타나는 소프트웨어 아키텍처 종류에 긍정적인 영향을 미친다.
+   - 또한, 컨슈머는 한 애플리케이션 인스턴스가 따라가기에는 메시지 소비 속도와 단일 메시지 처리의 계산 비용이 함께 너무 높은 시나리오를 처리할 수 있어야 한다. 즉, 컨슈머가 확장 가능해야 한다. Kafka에서 컨슈머 그룹을 auto-scaling이 가능함
+
+   </details>
+   
+   <details>
+   <summary>Kafka Ecosystem </summary>
+
+   - 만약 브로커가 파티션화되고 복제된 토픽을 관리하며 점점 더 많은 프로듀서와 컨슈머가 이벤트를 작성하고 읽는 시스템만 있다면, 이미 매우 유용한 시스템이 된다. 하지만 경험에 따르면, 일부 패턴이 나타나면서 개발자들이 핵심 Kafka에 계속해서 동일한 기능을 개발하게 된다.
+   - 특정하지 않은 일부 작업을 반복하는 공통된 기능 계층을 개발하게 되는데 이 코드는 중요한 작업을 수행하지만 실제 비즈니스와 직접적으로 연결되어 있지 않다. 이건 인프라에 해당하므로 인프라는 커뮤니티나 인프라 공급업체에서 제공해야 한다.
+   - Kafka Connect, Confluent Schema Registry, Kafka Streams 및 ksqlDB는 이러한 종류의 인프라 코드 예다.
+
+   </details>
+   
 </details>
 
 --- 
