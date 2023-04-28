@@ -131,6 +131,34 @@
 
    </details>
    
+   <details>
+   <summary>Kafka Connect </summary>
+      
+   - Apache Kafka의 integration API로, 다른 시스템에 저장된 데이터를 Kafka topic으로 이동시키거나 Kafka topic의 데이터를 다른 시스템으로 이동시키는 역할을 한다.
+   - 플러그인 형태로 구성된 ecosystem으로, 클라이언트 애플리케이션이다.
+   - Connect는 Kafka broker와 별도의 하드웨어에서 실행되는 서버 프로세스다.
+   - Connect는 확장 가능하고 fault-tolerant 하며, 여러 개의 Connect worker 클러스터를 실행해 데이터 이동 작업을 공유할 수 있다.
+   - 비즈니스 로직을 추상화하고 JSON config만으로 실행된다.
+   - Connect worker는 하나 이상의 connector를 실행한다. Connector는 외부 시스템과 상호 작용하는 플러그 가능한 구성 요소다. Source connector는 외부 시스템에서 데이터를 읽고 Kafka topic에 생성한다. Sink connector는 하나 이상의 Kafka topic을 구독하고 읽은 메시지를 외부 시스템에 작성
+   - 장점
+       - 많은 connector 생태계를 가지고 있다는 것입니다. 클라우드 blob 저장소에 데이터를 이동하거나 Elasticsearch에 기록하거나 RDB에 레코드를 삽입하는 코드를 작성하는 것은 대부분의 경우 동일
+       - RDB, Salesforce 또는 레거시 HDFS 파일 시스템에서 데이터를 읽는 것도 대부분의 경우 동일
+       - Connect의 connector 생태계는 Confluent Hub에서 사용할 수 있다
+       - Connect는 분산 시스템 및 플러그인 생태계이기 때문에, 프로그래밍이 쉽게 이루어질 수 있는 것처럼 보일 수 있지만 실제로는 많은 복잡성이 있다.
+           - 예를 들어 장애 조치 처리, 수평 확장, 변환 작업 처리, 일반적인 커넥터 코드 분배, 표준 인터페이스를 통한 구성 및 운영 등
+           - Connect를 사용하면 이러한 복잡성을 간단하게 해결할 수 있으며 필요한 경우에는 쉬운 API를 사용하여 자체 커넥터를 작성할 수도 있다
+   </details>
+   
+   <details>
+   <summary>Confluent Schema Registry </summary>
+
+   - domain object의 schema는 끊임없이 변경되고, 우리는 특정 topic의 메시지의 schema를 이해할 수 있는 방법이 있어야 한다. 이 문제를 해결하기 위해 Confluent Schema Registry 가 존재한다.
+   - Schema Registry는 Kafka broker 외부의 컴퓨터에서 실행되는 독립형 서버 프로세스다. 이 프로세스는 클러스터의 토픽에 기록된 모든 스키마의 DB를 관리한다. 이 DB는 내부 Kafka 토픽을 저장하고 빠른 접근을 위해 스키마 레지스트리에 캐시 된다. 스키마 레지스트리는 고가용성, 이중화하여 실행할 수 있어 한 인스턴스에 장애가 발생해도 동작이 가능하다.
+   - Schema Registry는 Producer와 Consumer가 이전 버전과 호환 가능한지 여부를 미리 예측할 수 있는 API다. Producer가 Schema Registry를 사용해도록 설정하면, 새 메시지의 스키마를 Schema Registry REST endpoint에서 API를 호출해 제공한다.
+   - 이전 메시지와 동일한 경우, 생성 작업은 성공할 수 있다. 마지막 메시지와 다르지만 토픽에 정의된 호환성과 일치하면, 생성 작업은 성공할 수 있다. 하지만, 호환성 규칙을 위반할 경우, 생성 작업은 애플리케이션 코드에서 감지해 실패한다.
+   - Consumer 측면에서도 코드에서 예상하는 버전과 호환되지 않는 스키마 메시지를 읽을 경우, Schema Registry는 해당 메시지를 consume 하면 안되는 걸 알려준다. Schema Registry는 스키마 evolution 문제를 완전히 자동화하진 않지만, 런타임 오류를 이용해 가능한 미리 방지해 문제를 해결할 수 있게 도와준다.
+   </details>
+   
 </details>
 
 --- 
